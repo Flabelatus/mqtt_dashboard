@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        #temperature {
+            font-size: 48px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Temperature Dashboard</h1>
+    <p>Current Temperature:</p>
+    <div id="temperature">Waiting for data...</div>
+
+    <script>
+        // Connect to WebSocket
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Listen for MQTT message from the server
+        socket.on('mqtt_message', function (data) {
+            console.log("Received data from WebSocket:", data);
+            document.getElementById('temperature').innerText = data.temperature + ' °C';
+        });
+    </script>
+</body>
+
+</html>
